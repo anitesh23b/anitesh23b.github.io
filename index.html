@@ -378,7 +378,41 @@ footer .acc{color:var(--accent)}
     </div>
   </div>
 </section>
-
+<div class="divider"></div>
+<section id="analytics">
+<div class="sw">
+<div class="eyebrow">// what_i_do</div>
+<h2 class="stitle">My Analytics</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem">
+<div style="background:#111;border:0.5px solid rgba(29,158,117,0.3);border-radius:12px;padding:1.5rem">
+<div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#1D9E75;letter-spacing:0.15em;margin-bottom:1rem">SKILL_PROFICIENCY.JSON</div>
+<canvas id="radarChart"></canvas>
+</div>
+<div style="background:#111;border:0.5px solid rgba(29,158,117,0.3);border-radius:12px;padding:1.5rem">
+<div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#1D9E75;letter-spacing:0.15em;margin-bottom:1rem">TOOLS_USAGE.CSV</div>
+<canvas id="barChart"></canvas>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);margin-bottom:2rem">
+<div style="background:#0e0e0e;padding:1.5rem;text-align:center">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#1D9E75;text-shadow:0 0 20px rgba(29,158,117,0.3)" id="c1">0</div>
+<div style="font-family:monospace;font-size:0.6rem;color:#6e6c66;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px">Rows Processed</div>
+</div>
+<div style="background:#0e0e0e;padding:1.5rem;text-align:center">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#1D9E75;text-shadow:0 0 20px rgba(29,158,117,0.3)" id="c2">0</div>
+<div style="font-family:monospace;font-size:0.6rem;color:#6e6c66;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px">Dashboards Built</div>
+</div>
+<div style="background:#0e0e0e;padding:1.5rem;text-align:center">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#1D9E75;text-shadow:0 0 20px rgba(29,158,117,0.3)" id="c3">0</div>
+<div style="font-family:monospace;font-size:0.6rem;color:#6e6c66;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px">Tools Mastered</div>
+</div>
+<div style="background:#0e0e0e;padding:1.5rem;text-align:center">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#1D9E75;text-shadow:0 0 20px rgba(29,158,117,0.3)" id="c4">0</div>
+<div style="font-family:monospace;font-size:0.6rem;color:#6e6c66;letter-spacing:0.1em;text-transform:uppercase;margin-top:4px">Client Satisfaction</div>
+</div>
+</div>
+</div>
+</section>
 <div class="divider"></div>
 
 <!-- SKILLS -->
@@ -594,5 +628,31 @@ function typewrite(){
 }
 typewrite();
 </script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// Charts
+window.addEventListener('load',function(){
+  var rCtx=document.getElementById('radarChart').getContext('2d');
+  new Chart(rCtx,{type:'radar',data:{labels:['Power BI','Excel','Sheets','SQL','Visualization','Cleaning','Reporting'],datasets:[{data:[90,92,88,65,90,87,88],backgroundColor:'rgba(29,158,117,0.12)',borderColor:'rgba(29,158,117,0.8)',borderWidth:1.5,pointBackgroundColor:'#1D9E75',pointRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{r:{grid:{color:'rgba(255,255,255,0.05)'},angleLines:{color:'rgba(255,255,255,0.05)'},pointLabels:{color:'rgba(154,150,144,0.9)',font:{size:11}},ticks:{display:false},suggestedMin:0,suggestedMax:100}}}});
+  var bCtx=document.getElementById('barChart').getContext('2d');
+  new Chart(bCtx,{type:'bar',data:{labels:['Power BI','Excel','Sheets','SQL','Visualization','Reporting'],datasets:[{data:[90,92,88,65,90,88],backgroundColor:'rgba(29,158,117,0.6)',borderColor:'rgba(29,158,117,1)',borderWidth:1,borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'rgba(154,150,144,0.8)',font:{size:10}}},y:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'rgba(154,150,144,0.8)',font:{size:10}},max:100}},animation:{duration:2000,easing:'easeInOutQuart'}}});
+});
+// Counters
+var counted=false;
+var countObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(!e.isIntersecting||counted)return;
+    counted=true;
+    [{id:'c1',target:500,suffix:'K+'},{id:'c2',target:10,suffix:'+'},{id:'c3',target:7,suffix:'+'},{id:'c4',target:100,suffix:'%'}].forEach(function(k){
+      var el=document.getElementById(k.id);
+      var c=0;
+      var s=setInterval(function(){c=Math.min(c+k.target/60,k.target);el.textContent=Math.round(c)+k.suffix;if(c>=k.target)clearInterval(s);},20);
+    });
+    countObs.unobserve(e.target);
+  });
+},{threshold:0.3});
+var sec=document.getElementById('analytics');
+if(sec)countObs.observe(sec);
+</script>
 </body>
 </html>
