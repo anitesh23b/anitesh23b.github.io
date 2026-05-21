@@ -254,6 +254,7 @@ footer .acc{color:var(--accent)}
         <span class="last">Bansal</span>
       </h1>
       <div class="hero-role">Data Analyst</div>
+      <div id="typewriter" style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.15em;color:#1D9E75;margin-bottom:0.5rem;min-height:1.5em"><span id="tw-text"></span><span style="animation:blink 0.7s infinite;display:inline-block">|</span></div>
       <p class="hero-desc">Turning raw data into clear decisions — with Power BI, Advanced Excel & SQL. I build dashboards that actually tell a story.</p>
       <div class="hero-ctas">
         <a href="#projects" class="btn-p">View Projects →</a>
@@ -581,5 +582,17 @@ document.querySelectorAll('.skill-card,.proj-card,.service-card').forEach(card=>
   card.addEventListener('mouseleave',()=>card.style.transform='');
 });
 </script>
+<script>
+const phrases=['Power BI Expert','Excel Wizard','SQL Analyst','Dashboard Builder','Data Storyteller'];
+let pi=0,ci=0,deleting=false;
+function typewrite(){
+  const el=document.getElementById('tw-text');
+  const phrase=phrases[pi];
+  if(!deleting){el.textContent=phrase.slice(0,ci+1);ci++;if(ci===phrase.length){deleting=true;setTimeout(typewrite,1800);return;}}
+  else{el.textContent=phrase.slice(0,ci-1);ci--;if(ci===0){deleting=false;pi=(pi+1)%phrases.length;}}
+  setTimeout(typewrite,deleting?60:110);
+}
+typewrite();
+</script> 
 </body>
 </html>
